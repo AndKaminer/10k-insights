@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{{ ticker }} | {{ year }}</h1>
+{% endblock %}
+
+{% block content %}
+<div>
+    <h2>{{ section_to_name[section] }}</h2>
+    <p>{{ filing[section] }}</p>
+</div>
+{% endblock %}

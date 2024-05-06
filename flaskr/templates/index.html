@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Welcome to 10K Insights. Please choose a stock to investigate:</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        {% for ticker in tickers %}
+        <li><a href="{{ url_for('stock', ticker=ticker) }}">{{ ticker }}</a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

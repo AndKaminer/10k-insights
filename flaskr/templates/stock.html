@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>{{ ticker }} | Company Investigation</h1>
+{% endblock %}
+
+{% block content %}
+<div>
+    <h2>View the raw section content</h2>
+    <form method="post">
+    <label for="years">Choose a year:</label>
+    <select name="years" id="years">
+        {% for i in range(earliest, latest + 1) %}
+        <option value="{{ i }}">{{ i }}</option> 
+        {% endfor %}
+    </select>
+
+    <label for="section">Choose a section of the filing (support for more sections coming soon):</label>
+    <select name="section" id="section">
+        <option value="business">Business Summary (Item 1.)</option>
+        <option value="mda">Management Discussion of the Business (Item 7.)</option>
+    </select>
+    <input type="submit" value="Go">
+    </form>
+</div>
+
+<div>
+    <h2>Have chatgpt compare how a section has changed over the years</h2>
+    <p>
+        This feature will have chatgpt compare the changes that took place between documents
+        from year to year, generating insight into the direction the company is going.
+    </p>
+
+    <form method="post">
+        <label for="year1">Choose a the first year:</label>
+        <select name="year1" id="year1">
+            {% for i in range(earliest, latest + 1) %}
+            <option value="{{ i }}">{{ i }}</option> 
+            {% endfor %}
+        </select>
+
+    <label for="year2">Choose a the second year:</label>
+        <select name="year2" id="year2">
+            {% for i in range(earliest, latest + 1) %}
+            <option value="{{ i }}">{{ i }}</option> 
+            {% endfor %}
+        </select>
+
+        <label for="section">Choose a section of the filing (support for more sections coming soon):</label>
+        <select name="section" id="section">
+            <option value="business">Business Summary (Item 1.)</option>
+            <option value="mda">Management Discussion of the Business (Item 7.)</option>
+        </select>
+        <input type="submit" value="Go">
+
+    </form>
+</div>
+
+{% endblock %}

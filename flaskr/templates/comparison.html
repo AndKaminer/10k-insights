@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>Language Model Comparison</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+{% endblock %}
+
+{% block content %}
+
+<div id="content">
+    <h3>Content Loading</h3>
+    <img src="https://i.gifer.com/ZKZg.gif"></img>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.emit('test-event', { 'ticker' : '{{ ticker }}', 'section': '{{ section }}', 'document1': '{{ document1 }}', 'document2' : '{{ document2 }}', 'year1' : '{{ year1 }}', 'year2' : '{{ year2 }}' });
+
+    socket.on('process-finished', function (data) {
+        var text = JSON.parse(data).data
+        var content = document.getElementById("content");
+        text = text.replaceAll(' ', '&nbsp;').replaceAll('\n', '<br>');
+        content.innerHTML = text;
+    });
+
+</script>
+
+{% endblock %}
