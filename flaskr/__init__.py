@@ -10,6 +10,7 @@ from flask_socketio import SocketIO, emit
 import anthropic
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import yfinance as yf
 
 TICKERS = ["AAPL", "MSFT", "GOOGL", "META", "IBM"]
 STARTING_DATE = 1995
@@ -38,6 +39,10 @@ def create_app(test_config=None, instance_relative_config=True):
     section_to_name = {
             'business' : 'Item 1. Business Description',
             'mda' : 'Item 7. Management Discussion'}
+
+    chart_to_name = {
+            'vscore-over-time': "Vader score over time"
+            }
 
 
     @app.route('/')
@@ -72,7 +77,7 @@ def create_app(test_config=None, instance_relative_config=True):
                 document = request.form['document']
                 ticker = request.form['ticker']
 
-                return render_template('chart.html', chart_type=chart_type, starting_year=starting_year, ending_year=ending_year, document=document, ticker=ticker)
+                return render_template('chart.html', title=chart_to_name[chart_type], chart_type=chart_type, starting_year=starting_year, ending_year=ending_year, document=document, ticker=ticker)
 
             elif 'year1' in request.form.keys():
                 year1 = int(request.form['year1'])

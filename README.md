@@ -57,6 +57,10 @@ a large context length, as opposed to OpenAI's GPT models (or, at least, I would
 to use the models that could handle a large context length).
 Because financial documents are so verbose, this was the most important factor in my choice.
 
+For charting, I used Chart.js, a lightweight javascript charting library. I chose to use
+it because it has all of the features I would reasonably need, without the need to write
+a bunch of JavaScript.
+
 ### File Downloading Approach
 I used sec_downloader to download metadata for the documents, then I used the requests library to get the raw html,
 since I had some problems with the way sec_downloader or sec-edgar-downloader were dealing with older files.
