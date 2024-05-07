@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1>View chart</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="content-div">
+        <h3>Loading chart. Please wait</h3>
+        <img src="https://i.gifer.com/ZKZg.gif">
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    var socket = io.connect('http://' + document.domain + ':' + location.port)
+    socket.emit('chart-event', {'ticker': '{{ ticker }}', 'chart_type': '{{ chart_type }}', 'starting_year': '{{ starting_year }}', 'ending_year': '{{ ending_year }}', 'document': '{{ document }}'})
+
+    socket.on('process-finished', function (data) {
+        var div = document.getElementById('content-div');
+        div.innerHTML = '<canvas id="chart"></canvas>'
+        
+        const ctx = document.getElementById('chart');
+
+        new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Score',
+                    data: JSON.parse(data),
+                borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}

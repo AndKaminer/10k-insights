@@ -9,8 +9,10 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 import openai
 import anthropic
+import nltk
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-TICKERS = ["AAPL", "MSFT"]
+TICKERS = ["AAPL", "MSFT", "GOOGL", "META", "IBM"]
 STARTING_DATE = 1995
 COMPANY = "Georgia Tech"
 EMAIL = "akaminer@gatech.edu"
@@ -33,10 +35,10 @@ def create_app(test_config=None, instance_relative_config=True):
     except OSError:
         pass
 
+    nltk.download("vader_lexicon")
     section_to_name = {
             'business' : 'Item 1. Business Description',
             'mda' : 'Item 7. Management Discussion'}
-
 
 
     @app.route('/')
@@ -63,7 +65,17 @@ def create_app(test_config=None, instance_relative_config=True):
                         year=year,
                         section=section,
                         section_to_name=section_to_name)
-            else:
+
+            elif 'chart_type' in request.form.keys():
+                chart_type = request.form['chart_type']
+                starting_year = int(request.form['starting_year'])
+                ending_year = int(request.form['ending_year'])
+                document = request.form['document']
+                ticker = request.form['ticker']
+
+                return render_template('chart.html', chart_type=chart_type, starting_year=starting_year, ending_year=ending_year, document=document, ticker=ticker)
+
+            elif 'year1' in request.form.keys():
                 year1 = int(request.form['year1'])
                 year2 = int(request.form['year2'])
                 section = request.form['section']
@@ -99,6 +111,24 @@ def create_app(test_config=None, instance_relative_config=True):
 
         emit('process-finished', json.dumps({'data' : response.choices[0].message.content}))
 
+    @socketio.on('chart-event')
+    def handle_chart_request(data):
+        ticker = data['ticker']
+        chart_type = data['chart_type']
+        starting_year = int(data['starting_year'])
+        ending_year = int(data['ending_year'])
+        document = data['document']
+
+        if chart_type == 'vscore-over-time':
+            x = [ i for i in range(starting_year, ending_year + 1) ]
+            y = get_vader_scores(ticker, document, starting_year, ending_year)
+            data = process_chart_data(x, y)
+        else:
+            data = [{'x': 0, 'y': 0}]
+
+        emit('process-finished', json.dumps(data))
+
+
     @socketio.on('claude-event')
     def handle_claude_request(data):
         document1 = data['document1']
@@ -123,5 +153,41 @@ def create_app(test_config=None, instance_relative_config=True):
 
         emit('process-finished', json.dumps({'data': response}))
 
+    def process_chart_data(x, y):
+        if len(x) != len(y):
+            raise Exception("x and y arrays don't have the same length!")
+        
+        zipped = zip(x, y)
+        data = [ {'x': z[0], 'y': z[1]} for z in zipped ]
+        return data
+
+
+    def return_test_chart():
+        return ([1, 2, 3, 4, 5, 6, 7, 8], [2.7, 3.5, 1.4, 7.8, 9.0, 14.3, 17.5, 2.6])
+
+    def get_vader_score(text):
+        analyzer = SentimentIntensityAnalyzer()
+
+        return analyzer.polarity_scores(text)
+
+    def get_vader_scores(ticker, document, start_year, end_year):
+        earliest, latest = FilingRetriever.get_year_range(ticker)
+
+        if start_year < earliest or end_year > latest:
+            raise Exception('Invalid start or end year')
+
+        scores = []
+
+        for year in range(start_year, end_year + 1):
+            f = FilingRetriever(ticker, COMPANY, EMAIL, year)
+
+            data = f.parse_10k_filing()
+            text = data[document]
+
+            vscores = get_vader_score(text)
+
+            scores.append(vscores['pos'])
+
+        return scores
 
     return app

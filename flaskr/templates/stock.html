@@ -7,6 +7,7 @@
 {% block content %}
 <div>
     <h2>View the raw section content</h2>
+    <p>This allows you to view the raw content of a section of the filing. Be warned - it's long, dense, and hard to read.</p>
     <form method="post">
     <label for="years">Choose a year:</label>
     <select name="years" id="years">
@@ -25,9 +26,9 @@
 </div>
 
 <div>
-    <h2>Have chatgpt compare how a section has changed over the years</h2>
+    <h2>Compare how a section has changed over the years</h2>
     <p>
-        This feature will have chatgpt compare the changes that took place between documents
+        This feature will use a language model to compare the changes that took place between documents
         from year to year, generating insight into the direction the company is going.
     </p>
 
@@ -46,14 +47,51 @@
             {% endfor %}
         </select>
 
-        <label for="section">Choose a section of the filing (support for more sections coming soon):</label>
+        <label for="section">choose a section of the filing (support for more sections coming soon):</label>
         <select name="section" id="section">
-            <option value="business">Business Summary (Item 1.)</option>
-            <option value="mda">Management Discussion of the Business (Item 7.)</option>
+            <option value="business">Business summary (item 1.)</option>
+            <option value="mda">Management discussion of the business (item 7.)</option>
         </select>
-        <input type="submit" value="Go">
+        <input type="submit" value="go">
 
     </form>
+</div>
+
+<div>
+    <h2>View a chart</h2>
+    <p>Plot various statistics over time</p>
+    <form method="post">
+        <label for="chart_type">Choose a chart type!</label>
+        <select name="chart_type" id="chart_type">
+            <option value="vscore-over-time">Vader score over time</option>
+        </select>
+
+        <label for="starting_year">Choose a year to start evaluating at</label>
+            <select name="starting_year" id="starting_year">
+                {% for i in range(earliest, latest + 1) %}
+                <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
+
+        <label for="ending_year">Choose a year to start evaluating at</label>
+            <select name="ending_year" id="ending_year">
+                {% for i in range(earliest, latest + 1) %}
+                <option value="{{ i }}">{{ i }}</option>
+                {% endfor %}
+            </select>
+
+        <label for="document">choose a section of the filing (support for more sections coming soon):</label>
+        <select name="document" id="document">
+            <option value="business">Business summary (item 1.)</option>
+            <option value="mda">management discussion of the business (item 7.)</option>
+        </select>
+
+        <input type="hidden" id="ticker" name="ticker" value='{{ ticker }}'>
+
+        <input type="submit" value="go">
+
+    </form>
+
 </div>
 
 {% endblock %}

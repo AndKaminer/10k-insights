@@ -5,9 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <ul>
-        {% for ticker in tickers %}
-        <li><a href="{{ url_for('stock', ticker=ticker) }}">{{ ticker }}</a></li>
-        {% endfor %}
-    </ul>
+<p>
+    Working with financial documents can be difficult and time consuming.
+    They tend to be dense, full of jargon, and lengthy.
+    This application helps with this issue by putting 10K listings at your fingertips!
+    Not only can you easily grab information from any year available, but you can use one of our
+    language models to summarize and compare them!
+    
+</p>
+<ul>
+    {% for ticker in tickers %}
+    <li><a href="{{ url_for('stock', ticker=ticker) }}">{{ ticker }}</a></li>
+    {% endfor %}
+</ul>
+<p>
+    Note that this is designed to be infinitely extensible, as adding a company is as simple as adding a ticker to a list.
+</p>
 {% endblock %}
