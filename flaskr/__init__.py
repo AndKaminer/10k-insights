@@ -7,7 +7,6 @@ import time
 
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
-import openai
 import anthropic
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
@@ -90,27 +89,6 @@ def create_app(test_config=None, instance_relative_config=True):
         time.sleep(5)
         emit('process-finished', json.dumps({'data' : 'Lorem ipsum ipsum lorem\n\n blah blah lorem ipsum lorem upsum rahasdkfh \n- rahhhh lorem ipsum'}))
 
-    @socketio.on('gpt-event')
-    def handle_openai_request(data):
-        document1 = data['document1']
-        document2 = data['document2']
-        year1 = data['year1']
-        year2 = data['year2']
-        section = data['section']
-        ticker = data['ticker']
-
-        with app.open_instance_resource('.env') as key:
-            k = key.readline().decode().rstrip('\n')
-            client = openai.OpenAI(api_key=k)
-        message = f"Both documents are from {section} of reports from company with ticker: {ticker}. This is the first document, from {year1}:\n{document1}\n\n This is the second document, from {year2}:\n{document2}"
-        print(message)
-        response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[{"role": "system", "content": "You are a helpful assistant who is an expert in reading financial statements. You will be provided with two financial statements from a 10K. Please compare and contrast them."},
-                          {"role": "user", "content": message}])
-
-        emit('process-finished', json.dumps({'data' : response.choices[0].message.content}))
-
     @socketio.on('chart-event')
     def handle_chart_request(data):
         ticker = data['ticker']
@@ -127,7 +105,6 @@ def create_app(test_config=None, instance_relative_config=True):
             data = [{'x': 0, 'y': 0}]
 
         emit('process-finished', json.dumps(data))
-
 
     @socketio.on('claude-event')
     def handle_claude_request(data):
