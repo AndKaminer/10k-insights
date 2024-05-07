@@ -14,12 +14,12 @@
 
 <script type="text/javascript" charset="utf-8">
     var socket = io.connect('http://' + document.domain + ':' + location.port);
-    socket.emit('test-event', { 'ticker' : '{{ ticker }}', 'section': '{{ section }}', 'document1': '{{ document1 }}', 'document2' : '{{ document2 }}', 'year1' : '{{ year1 }}', 'year2' : '{{ year2 }}' });
+    socket.emit('claude-event', { 'ticker' : '{{ ticker }}', 'section': '{{ section }}', 'document1': '{{ document1 }}', 'document2' : '{{ document2 }}', 'year1' : '{{ year1 }}', 'year2' : '{{ year2 }}' });
 
     socket.on('process-finished', function (data) {
         var text = JSON.parse(data).data
         var content = document.getElementById("content-div");
-        text = text.replaceAll(' ', '&nbsp;').replaceAll('\n', '<br>');
+        text = text.replaceAll(' ', '&nbsp;').replaceAll('\n', '<br>').replaceAll(\-\g, '\u2011');
         content.innerHTML = text;
     });
 

@@ -86,8 +86,8 @@ def create_app(test_config=None, instance_relative_config=True):
 
     @socketio.on('test-event')
     def test(data):
-        time.sleep(5)
-        emit('process-finished', json.dumps({'data' : 'Lorem ipsum ipsum lorem\n\n blah blah lorem ipsum lorem upsum rahasdkfh \n- rahhhh lorem ipsum'}))
+        time.sleep(2)
+        emit('process-finished', json.dumps({'data' : 'Lorem ipsum ipsum lorem\n\n blah blah lorem ipsum lorem upsum rahasdkfh lorem iplore sumip ipsum lorlor ipipsum loripsumsum loreip lorelorelore ipipip loremsumip blah blah blah testing testing 1, 2, 3 \n- rahhhh lorem ipsum'}))
 
     @socketio.on('chart-event')
     def handle_chart_request(data):
