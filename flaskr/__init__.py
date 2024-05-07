@@ -173,3 +173,5 @@ def create_app(test_config=None, instance_relative_config=True):
         return scores
 
     return app
+
+app = create_app()
