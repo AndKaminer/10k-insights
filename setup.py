@@ -10,7 +10,6 @@ setup(
         'flask-socketio',
         'anthropic',
         'nltk',
-        'sec-downloader'
-        ]
+        'sec-downloader',
+        'bs4']
     )
-
