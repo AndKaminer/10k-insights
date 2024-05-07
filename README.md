@@ -29,3 +29,10 @@ Install the project. Then, from inside the top-level directory, use the command:
 `
 flask --app flaskr run
 `
+
+## Technologies I Learned for the First Time on This Project:
+- Flask (First time building a real web app)
+- Anthropic API
+- sec-downloader
+- SocketIO
+- Chart.js
