@@ -19,7 +19,7 @@
     socket.on('process-finished', function (data) {
         var text = JSON.parse(data).data
         var content = document.getElementById("content-div");
-        text = text.replaceAll(' ', '&nbsp;').replaceAll('\n', '<br>').replaceAll(\-\g, '\u2011');
+        text = text.replaceAll(' ', '&nbsp;').replaceAll('\n', '<br>');
         content.innerHTML = text;
     });
 
