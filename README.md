@@ -1,4 +1,7 @@
 # 10K Insights
+Extract raw insights from financial documents using LLMs
+
+## Broken Version
 
 A broken version of this app is running at [http://akaminer.pythonanywhere.com/](http://akaminer.pythonanywhere.com/). Since the SEC is for some reason upset with me requesting files to said website,
 it is, in fact, very broken. Still, feel free to poke around. Note that using the LLM functionality takes real credits, even if the app is broken. Please use discretion!
