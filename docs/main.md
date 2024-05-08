@@ -1,5 +1,7 @@
 # Main Documentation
 
+See also: [flask docs](/docs/flask.md), [nonflask docs](/docs/nonflask.md)
+
 ## Installation/Setup
 Look at the README
 
