@@ -5,7 +5,7 @@ it is, in fact, very broken. Still, feel free to poke around. Note that using th
 
 ## Video!
 
-https://github.com/AndKaminer/10k-insights/assets/94922098/f102fe3b-b132-4269-8d6d-3e812ee2939b
+[10k-insights-video.webm](https://github.com/AndKaminer/10k-insights/assets/94922098/4b515f24-8afe-4035-864f-fb1e8d281590)
 
 
 ## Installation
