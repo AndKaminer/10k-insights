@@ -1,6 +1,6 @@
-# Main Documentation
+# Main Documentation [(Back to README)](/README.md)
 
-See also: [flask docs](/docs/flask.md), [nonflask docs](/docs/nonflask.md)
+See also: [Flask docs](/docs/flask.md), [Nonflask docs](/docs/nonflask.md)
 
 ## Installation/Setup
 Look at the README
